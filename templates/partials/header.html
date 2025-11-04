@@ -1,0 +1,87 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg bg-green">
+  <div class="container-fluid me-5 ms-5">
+    <a class="navbar-brand" href="/" style="padding-top: 0;">
+      <img src="{% static 'images/logo2.png' %}" alt="Ảnh logo" class="logo-big">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse font-poppins" id="navbarNavDropdown">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-4 gap-4">
+        {% if request.user.is_authenticated and not request.user.is_superuser %}
+        <li class="nav-item">
+          <a class="nav-link {% if 'time-keeping' in request.path %} text-select {% endif %}" href="/time-keeping/">CHẤM CÔNG</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if '/timesheet/' in request.path %} text-select {% endif %}" href="/timesheet/{{request.user.username}}/">BẢNG CÔNG</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if 'request-absence' in request.path %} text-select {% endif %}" href="{% url 'request-absence' request.user.username %}">NGHỈ PHÉP</a>
+        </li>
+        {% endif %}
+
+        {% if request.user.is_superuser %}
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/manager/' %} text-select {% endif %}" href="/manager/">DASHBOARD</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if '/manager/employee/' in request.path %} text-select {% endif %}" href="/manager/employee/">NHÂN VIÊN</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link {% if '/time-keeping/' in request.path %} text-select {% endif %}" href="/time-keeping/">CHẤM CÔNG</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if '/manager/timesheet/' in request.path %} text-select {% endif %}" href="/manager/timesheet/">BẢNG CÔNG</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if '/manager/salary/' in request.path %} text-select {% endif %}" href="/manager/salary/">BẢNG LƯƠNG</a>
+        </li>
+        <li class="nav-item position-relative">
+          <a class="nav-link {% if '/manager/absence/' in request.path %} text-select {% endif %}" href="/manager/absence/">
+            NGHỈ PHÉP
+            {% if count_pending > 0 %}
+            <span class="badge rounded-pill bg-danger notification-badge">
+              {{ count_pending }}
+            </span>
+            {% endif %}
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+
+      {% if request.user.is_authenticated %}
+      <ul class="navbar-nav gap-3">
+        <li class="nav-item">
+            <a class="nav-link position-relative {% if 'complaint' in request.path %} text-select {% endif %}"
+               href="{% if request.user.is_superuser %}/manager/complaint/{% else %}/complaints/{% endif %}">
+                <i class="fa-solid fa-envelope fs-5"></i>
+                {% if count_complaint_pending > 0 and request.user.is_superuser %}
+                <span class="badge rounded-pill bg-danger notification-badge">
+                    {{ count_complaint_pending }}
+                </span>
+                {% endif %}
+            </a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-regular fa-user me-2"></i> {{ request.user.get_full_name|default:request.user.username }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="/profile/{{request.user.username}}/">HỒ SƠ CÁ NHÂN</a></li>
+            <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.2);"></li>
+            <li><a class="dropdown-item" href="/logout/">ĐĂNG XUẤT</a></li>
+          </ul>
+        </li>
+      </ul>
+      {% else %}
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/login/' %} text-select {% endif %}" href="/login/">ĐĂNG NHẬP</a>
+        </li>
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+</nav>

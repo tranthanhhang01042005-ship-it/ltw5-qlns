@@ -1,0 +1,121 @@
+{% extends '../layouts/base.html' %}
+{% load static %}
+
+{% block main %}
+<link rel="stylesheet" href="{% static 'styles/table.css' %}">
+<div class="container my-5">
+
+    <h2 class="text-center text-green fw-bold mb-4">BẢNG CHẤM CÔNG CỦA {{ user.get_full_name|default:user.username|upper }}</h2>
+
+    <form class="row g-3 align-items-end justify-content-center bg-light p-3 rounded border mb-4" method="GET">
+
+        <div class="col-md-2">
+            <label for="status" class="form-label fw-bold">Tình trạng</label>
+            <select id="status" class="form-select" name="status">
+                <option value="" {% if not status %}selected{% endif %}>Tất cả</option>
+                <option value="Đúng Giờ" {% if status == 'Đúng Giờ' %}selected{% endif %}>Đúng Giờ</option>
+                <option value="Đi muộn" {% if status == 'Đi muộn' %}selected{% endif %}>Đi muộn</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="startDate" class="form-label fw-bold">Ngày bắt đầu</label>
+            <input type="date" class="form-control" id="startDate" name="start-date" value="{{ start_date }}">
+        </div>
+
+        <div class="col-md-2">
+            <label for="endDate" class="form-label fw-bold">Ngày kết thúc</label>
+            <input type="date" class="form-control" id="endDate" name="end-date" value="{{ end_date }}">
+        </div>
+
+        <div class="col-md-1 d-flex align-items-end">
+            <button type="submit" class="btn bg-filter text-white w-100">Lọc</button>
+        </div>
+
+        <input type="hidden" name="page" value="1">
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-bordered timesheet-table text-center">
+            <thead>
+                <tr>
+                    <th>Ngày làm</th>
+                    <th>Vào ca</th>
+                    <th>Hết ca</th>
+                    <th>Tình trạng</th>
+                    <th>Giờ làm</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sheet in page_obj %}
+                <tr>
+                    <td>{{ sheet.date|date:"d/m/Y" }}</td>
+
+                    <td>{{ sheet.checkin|time:"H:i"|default_if_none:'-' }}</td>
+                    <td>{{ sheet.checkout|time:"H:i"|default_if_none:'-' }}</td>
+
+                    <td>
+                        <span class="badge
+                            {% if sheet.status == 'Đi đúng giờ' %}bg-success
+                            {% elif sheet.status == 'Đi muộn' %}bg-danger
+                            {% else %}bg-secondary
+                            {% endif %}">
+                            {{ sheet.status }}
+                        </span>
+                    </td>
+
+                    <td>{{ sheet.work_hour|default:'-' }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">
+                        <div class="alert alert-info mb-0" role="alert">
+                            Không có dữ liệu chấm công nào.
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mt-4">
+
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1&{{ query_params }}">«</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&{{ query_params }}"><</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">«</span></li>
+            <li class="page-item disabled"><span class="page-link"><</span></li>
+            {% endif %}
+
+            {% for i in page_obj.paginator.page_range %}
+                {% if i > page_obj.number|add:'-2' and i < page_obj.number|add:'2' %}
+                    <li class="page-item {% if i == page_obj.number %}active{% endif %}">
+                        <a class="page-link" href="?page={{ i }}&{{ query_params }}">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}&{{ query_params }}">></a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&{{ query_params }}">»</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">></span></li>
+            <li class="page-item disabled"><span class="page-link">»</span></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

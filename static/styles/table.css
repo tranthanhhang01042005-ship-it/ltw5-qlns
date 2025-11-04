@@ -1,0 +1,44 @@
+.table-bordered thead th {
+  vertical-align: middle;
+}
+
+.table-bordered tbody tr:nth-child(odd) {
+  background-color: #E8F5E9; /* Light Green */
+}
+
+.table-bordered tbody tr:nth-child(even) {
+  background-color: #FFFFFF;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #C8E6C9; /* Lighter Green on hover */
+}
+
+.bg-tab {
+  background-color: #4CAF50 !important; /* Main Green */
+  color: white !important;
+}
+
+.custom-border {
+  border: 2px solid #4CAF50; /* Main Green */
+  border-radius: 10px;
+}
+
+.border-cell {
+  border: 1px solid #4CAF50; /* Main Green */
+}
+
+.link-highlight {
+  color: #4CAF50; /* Main Green */
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.link-highlight:hover {
+  color: #388E3C; /* Darker Green on hover */
+  text-decoration: underline;
+}
+
+.table-bordered tbody tr:last-child {
+  border-bottom: 2px solid #4CAF50; /* Main Green */
+}

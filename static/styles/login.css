@@ -1,0 +1,51 @@
+body {
+            margin: 0;
+            background-image: url('/static/images/bg_login.jpg');
+            background-size: cover;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            justify-content: center;
+            display: flex;
+}
+.div-main {
+  width: 80%;
+}
+
+.div-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+            padding-right: 70px;
+            padding-left: 70px;
+            box-shadow: 0px 0px 10px orange;
+            text-align: center;
+            background-color: #fdf6eb;
+            height: 45vh;
+            width: 550px;
+            border-radius: 15px;
+
+}
+.login-form h2 {
+            margin-bottom: 40px;
+}
+.form-control {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+}
+.bt {
+            background-color: darkorange;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+}
+.bt:hover {
+            background-color: #E67E22;
+}

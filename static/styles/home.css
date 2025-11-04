@@ -1,0 +1,177 @@
+/* Card hover effect */
+  .card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Carousel */
+  .carousel img {
+    border-radius: 10px;
+  }
+
+  .carousel .carousel-caption {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+  }
+
+  /* Heading style */
+  h2 {
+    font-family: 'poppins', poppins;
+    font-weight: bold;
+  }
+
+  .text-muted {
+    color: #6c757d !important;
+  }
+  .card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+.text-muted { color: #6c757d !important; }
+
+/* Banner with overlay text */
+.welcome-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 2rem;
+  border-radius: 10px;
+  z-index: 10; /* Ensure overlay is on top of carousel controls */
+  /* Animation removed from parent */
+}
+
+.welcome-overlay h2 {
+  font-size: 2.5rem;
+}
+
+.welcome-overlay p {
+  font-size: 1.2rem;
+}
+
+.welcome-overlay h2,
+.welcome-overlay p {
+  color: white !important;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  font-family: 'Saira Condensed', sans-serif;
+}
+
+/* Keyframes for the new sequential animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation for the first line */
+.fade-in-1 {
+  opacity: 0; /* Start hidden */
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+/* Animation for the second line with a delay */
+.fade-in-2 {
+  opacity: 0; /* Start hidden */
+  animation: fadeInUp 1s ease-out 0.5s forwards; /* 0.5s delay */
+}
+
+/* Carousel Customization for consistent height */
+.carousel-inner {
+  border-radius: 10px; /* Apply border-radius to the container */
+}
+
+.carousel-item img {
+  max-height: 500px; /* Adjust this value as needed */
+  object-fit: cover; /* Ensures images cover the area without distortion */
+  width: 100%;
+}
+
+/* Announcements Section */
+.announcement-section {
+  padding: 2rem 0;
+}
+
+.announcement-section h2 {
+  color: #49683c; /* Match the theme green color */
+  font-family: 'Saira Condensed', sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.announcement-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden; /* Ensures image corners are rounded */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.announcement-card .card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.announcement-card .card-body {
+  flex-grow: 1;
+}
+
+.announcement-card .card-title {
+  font-weight: 600;
+  color: #333;
+}
+
+.announcement-card .card-footer {
+  text-align: right;
+}
+
+/* Schedule and Birthday Section */
+.schedule-card, .birthday-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.schedule-card:hover, .birthday-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.section-title {
+  color: #49683c;
+  font-family: 'Saira Condensed', sans-serif;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 0.75rem;
+  font-size: 1.5rem;
+}
+
+.schedule-card .list-group-item,
+.birthday-card .list-group-item {
+  border-color: #f0f0f0;
+  padding: 1rem 0.25rem;
+  font-family: 'Poppins', sans-serif;
+  color: #555;
+  font-weight: 500;
+}
+
+.birthday-card .list-group-item::before {
+  content: '🎉';
+  margin-right: 12px;
+}

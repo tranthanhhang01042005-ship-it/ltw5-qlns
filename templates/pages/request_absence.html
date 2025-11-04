@@ -1,0 +1,92 @@
+{% extends '../layouts/base.html' %}
+{% load static %}
+
+{% block main %}
+<link rel="stylesheet" href="{% static 'styles/table.css' %}">
+
+<br>
+<h1 class="text-center" style="font-size: 2rem; font-weight: bold; color: #2E7D32;">ĐƠN NGHỈ PHÉP</h1>
+<br>
+
+<div class="container p-4" style="background-color: #f9f1f2; border: 2px solid #4CAF50; border-radius: 12px;">
+  <h2 style="font-size: 1.5rem; color: #2E7D32;">Gửi yêu cầu nghỉ phép</h2>
+  <form method="POST" enctype="multipart/form-data" class="form-request">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label for="start_date" class="form-label fw-bold" style="color: #1B5E20;">Ngày bắt đầu nghỉ:</label>
+      {{ form.start_date }}
+    </div>
+
+    <div class="mb-3">
+      <label for="end_date" class="form-label fw-bold" style="color: #1B5E20;">Ngày kết thúc nghỉ:</label>
+      {{ form.end_date }}
+    </div>
+
+    <div class="mb-3">
+      <label for="reason" class="form-label fw-bold" style="color: #1B5E20;">Lý do:</label>
+      {{ form.reason }}
+    </div>
+
+    <div class="mb-3">
+      <label for="image" class="form-label fw-bold" style="color: #1B5E20;">Ảnh minh chứng:</label>
+      {{ form.image }}
+    </div>
+
+    <center>
+      <button type="submit" class="btn btn-primary"
+        style="background-color: #4CAF50; border-color: #388E3C; color: white; font-weight: 600;">
+        GỬI ĐƠN
+      </button>
+    </center>
+  </form>
+</div>
+
+<br>
+
+{% if absences %}
+<table class="table table-hover table-bordered custom-border" style="border-radius: 10px; overflow: hidden;">
+  <thead class="text-white" style="background-color: #2E7D32;">
+    <tr>
+      <th class="text-center">Ngày bắt đầu</th>
+      <th class="text-center">Ngày kết thúc</th>
+      <th class="text-center">Lý do</th>
+      <th class="text-center">Trạng thái</th>
+      <th class="text-center">Minh chứng</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for absence in absences %}
+    <tr class="table-row" style="transition: background-color 0.3s;">
+      <td class="text-center align-middle border-cell">{{ absence.start_date|date:"d/m/Y" }}</td>
+      <td class="text-center align-middle border-cell">{{ absence.end_date|date:"d/m/Y" }}</td>
+      <td class="align-middle border-cell">{{ absence.reason }}</td>
+      <td class="text-center align-middle border-cell">
+        {% if absence.status == 'Đã duyệt' %}
+          <span style="color: green; font-weight: bold;">Đã duyệt</span>
+        {% elif absence.status == 'Đang chờ' %}
+          <span style="color: orange; font-weight: bold;">Đang chờ</span>
+        {% else %}
+          <span style="color: red; font-weight: bold;">Từ chối</span>
+        {% endif %}
+      </td>
+      <td class="text-center align-middle border-cell">
+        {% if absence.image %}
+        <a href="{{ absence.image.url }}" target="_blank">
+          <button class="btn btn-secondary" style="background-color: #4CAF50; border-color: #388E3C; color: white;">
+            Xem ảnh
+          </button>
+        </a>
+        {% else %}
+        <span>Không có hình ảnh</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br>
+{% endif %}
+
+<script src="{% static 'scripts/request_absence.js' %}"></script>
+{% endblock %}

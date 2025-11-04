@@ -1,0 +1,143 @@
+{% extends '../layouts/base.html' %}
+{% load static %}
+
+{% block main %}
+<link rel="stylesheet" href="{% static 'styles/home.css' %}">
+
+<div class="container mt-4">
+  <!-- Banner with Welcome Text -->
+  <div class="banner mb-5 position-relative">
+    <!-- Bootstrap Carousel -->
+    <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{% static 'images/banner1.jpg' %}" class="d-block w-100" alt="Banner Image 1">
+        </div>
+        <div class="carousel-item">
+          <img src="{% static 'images/banner2.jpg' %}" class="d-block w-100" alt="Banner Image 2">
+        </div>
+        <div class="carousel-item">
+          <img src="{% static 'images/banner3.jpg' %}" class="d-block w-100" alt="Banner Image 3">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+    <!-- Welcome Text Overlay (remains on top) -->
+    <div class="welcome-overlay text-center">
+      <h2 class="fw-bold fade-in-1">
+        Welcome back {{ request.user.first_name }} {{ request.user.last_name }}!
+      </h2>
+      <p class="fade-in-2">Mỗi nỗ lực của bạn là chìa khóa thành công của chúng ta.</p>
+    </div>
+  </div>
+
+  <!-- Announcements Section -->
+  <div class="announcement-section mt-5 mb-5">
+    <h2 class="text-center mb-4">THÔNG BÁO MỚI NHẤT</h2>
+    <div class="row">
+      <!-- Announcement 1 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 card-hover announcement-card">
+          <img src="{% static 'images/TB3.jpg' %}" class="card-img-top" alt="Announcement 1">
+          <div class="card-body">
+            <h5 class="card-title">Cập nhật chính sách nghỉ phép năm 2024</h5>
+            <p class="card-text text-muted">Vui lòng xem chi tiết các thay đổi về quy định nghỉ phép và cách thức đăng ký mới, áp dụng từ tháng tới.</p>
+          </div>
+          <div class="card-footer bg-transparent border-top-0">
+            <a href="#" class="btn bg-btn text-white">Đọc thêm</a>
+          </div>
+        </div>
+      </div>
+      <!-- Announcement 2 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 card-hover announcement-card">
+          <img src="{% static 'images/TB1.jpg' %}" class="card-img-top" alt="Announcement 2">
+          <div class="card-body">
+            <h5 class="card-title"> Christmas Party </h5>
+            <p class="card-text text-muted">Lalin thân mời bạn đến tham dự tiệc Noel. Click vào đọc thêm để biết thêm thông tin chi tiết.</p>
+          </div>
+          <div class="card-footer bg-transparent border-top-0">
+            <a href="#" class="btn bg-btn text-white">Đọc thêm</a>
+          </div>
+        </div>
+      </div>
+      <!-- Announcement 3 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 card-hover announcement-card">
+          <img src="{% static 'images/TB2.jpg' %}" class="card-img-top" alt="Announcement 3">
+          <div class="card-body">
+            <h5 class="card-title">Khảo sát mức độ hài lòng của nhân viên</h5>
+            <p class="card-text text-muted">Ý kiến của bạn rất quan trọng! Vui lòng dành chút thời gian hoàn thành bài khảo sát để giúp công ty cải thiện môi trường làm việc.</p>
+          </div>
+          <div class="card-footer bg-transparent border-top-0">
+            <a href="#" class="btn bg-btn text-white">Đọc thêm</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Work Calendar and Birthdays Section -->
+  <div class="row mt-5 mb-5">
+    <!-- Work Calendar -->
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100 schedule-card">
+        <div class="card-body">
+          <h4 class="card-title section-title">📅 Lịch làm việc</h4>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong>30/04</strong> - Nghỉ lễ Giải phóng miền Nam
+              </div>
+              <span class="badge bg-danger rounded-pill">Ngày lễ</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong>01/05</strong> - Nghỉ lễ Quốc tế Lao động
+              </div>
+              <span class="badge bg-danger rounded-pill">Ngày lễ</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong>15/05</strong> - Họp toàn công ty
+              </div>
+              <span class="badge bg-primary rounded-pill">Cuộc họp</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong>02/09</strong> - Nghỉ lễ Quốc Khánh
+              </div>
+              <span class="badge bg-danger rounded-pill">Ngày lễ</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employee Birthdays -->
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100 birthday-card">
+        <div class="card-body">
+          <h4 class="card-title section-title"> Sinh nhật Nhân viên</h4>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Nguyễn Văn An - 28/04</li>
+            <li class="list-group-item">Trần Thị Bích - 09/05</li>
+            <li class="list-group-item">Lê Hoàng Cường - 21/05</li>
+            <li class="list-group-item">Phạm Thu Duyên - 12/06</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of Work Calendar and Birthdays Section -->
+
+</div>
+{% endblock %}

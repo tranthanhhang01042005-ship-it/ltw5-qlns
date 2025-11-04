@@ -1,0 +1,235 @@
+{% extends '../layouts/base.html' %}
+{% load static %}
+
+{% block main %}
+<link rel="stylesheet" href="{% static 'styles/management.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<br>
+
+<!-- HEADER -->
+<h1 style="text-align: center; font-size: 2rem; font-weight: bold; color: #49683c;">DASHBOARD</h1>
+<div class="container-fluid mt-4 px-4">
+
+  <!-- TOP STAT CARDS -->
+  <div class="row g-4 mb-4 text-center">
+    <!-- TỔNG NHÂN VIÊN -->
+    <div class="col-md-3">
+      <div class="stat-card h-100">
+        <div class="stat-icon bg-primary-subtle text-primary">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <div>
+          <h6 class="fw-semibold text-muted">Tổng nhân viên</h6>
+          <h3 class="fw-bold">{{ count_emp }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- TỔNG PHÒNG BAN -->
+    <div class="col-md-3">
+      <div class="stat-card h-100">
+        <div class="stat-icon bg-success-subtle text-success">
+          <i class="fa-solid fa-building"></i>
+        </div>
+        <div>
+          <h6 class="fw-semibold text-muted">Tổng phòng ban</h6>
+          <h3 class="fw-bold">{{ count_dpm }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- ĐƠN NGHỈ CHƯA DUYỆT -->
+    <div class="col-md-3">
+      <div class="stat-card h-100">
+        <div class="stat-icon bg-danger-subtle text-danger">
+          <i class="fa-solid fa-calendar-xmark"></i>
+        </div>
+        <div>
+          <h6 class="fw-semibold text-muted">Đơn nghỉ chưa duyệt</h6>
+          <h3 class="fw-bold">{{ day_off_pending }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- HỘP THƯ HÔM NAY -->
+    <div class="col-md-3">
+      <div class="stat-card h-100">
+        <div class="stat-icon bg-warning-subtle text-warning">
+          <i class="fa-solid fa-envelope-open-text"></i>
+        </div>
+        <div>
+          <h6 class="fw-semibold text-muted">Hộp thư hôm nay</h6>
+          <h3 class="fw-bold">{{ letter_pending }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MID SECTION -->
+  <div class="row g-4">
+    <!-- EMPLOYEES BY DEPARTMENT -->
+    <div class="col-md-12">
+      <div class="card shadow-sm border-0 rounded-4 p-3">
+        <h5 class="fw-bold mb-3 text-secondary">
+          <i class="fa-solid fa-chart-column me-2 text-primary"></i>Số lượng nhân viên theo phòng ban
+        </h5>
+        <canvas id="projectChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTENDANCE + GENDER RATIO -->
+  <div class="row g-4 mt-3">
+    <!-- CHẤM CÔNG -->
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0 rounded-4 p-3">
+        <h5 class="fw-bold mb-3 text-secondary">
+          <i class="fa-solid fa-user-check me-2 text-success"></i>Chấm công
+        </h5>
+        <canvas id="attendanceChart"></canvas>
+      </div>
+    </div>
+
+    <!-- TỶ LỆ NHÂN SỰ NAM / NỮ -->
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 rounded-4 p-3">
+        <h5 class="fw-bold mb-3 text-secondary">
+          <i class="fa-solid fa-venus-mars me-2 text-info"></i>Tỷ lệ nhân sự Nam / Nữ
+        </h5>
+        <canvas id="genderChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // === BIỂU ĐỒ NHÂN VIÊN THEO PHÒNG BAN ===
+  new Chart(document.getElementById('projectChart'), {
+    type: 'bar',
+    data: {
+      labels: {{ departments|safe }},
+      datasets: [{
+        label: 'Số lượng nhân viên',
+        data: {{ emp_count|safe }},
+        backgroundColor: '#5DADE2',
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' },
+        title: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: true, title: { display: true, text: 'Số nhân viên' } },
+        x: { title: { display: true, text: 'Phòng ban' } }
+      },
+      maintainAspectRatio: false
+    }
+  });
+
+  // === BIỂU ĐỒ TỶ LỆ NHÂN SỰ NAM / NỮ ===
+  new Chart(document.getElementById('genderChart'), {
+    type: 'pie',
+    data: {
+      labels: ['Nam', 'Nữ'],
+      datasets: [{
+        data: [60, 40],
+        backgroundColor: ['#4E73DF', '#E74A3B'],
+        borderWidth: 2,
+        borderColor: '#fff',
+        hoverOffset: 12
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: { animateScale: true, animateRotate: true },
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 14 }, color: '#333' } },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const total = context.dataset.data.reduce((a, b) => a + b, 0);
+              const value = context.parsed;
+              const percent = ((value / total) * 100).toFixed(1);
+              return `${context.label}: ${value} (${percent}%)`;
+            }
+          }
+        }
+      },
+      maintainAspectRatio: false
+    }
+  });
+
+  // === BIỂU ĐỒ CHẤM CÔNG (Đi đúng giờ / Đi muộn) ===
+  new Chart(document.getElementById('attendanceChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Th1','Th2','Th3','Th4','Th5','Th6','Th7','Th8','Th9'],
+      datasets: [
+        {
+          label: 'Đi đúng giờ',
+          data: [95, 88, 92, 97, 93, 98, 96, 94, 97],
+          backgroundColor: '#1CC88A'
+        },
+        {
+          label: 'Đi muộn',
+          data: [5, 12, 8, 3, 7, 2, 4, 6, 3],
+          backgroundColor: '#E74A3B'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        x: { title: { display: true, text: 'Tháng' } },
+        y: { beginAtZero: true, title: { display: true, text: 'Số nhân viên' } }
+      },
+      maintainAspectRatio: false
+    }
+  });
+</script>
+
+<style>
+  body { background: #F8FAFC; }
+  .title { color: #E67E22; font-size: 2.3rem; }
+
+  .stat-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 25px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    height: 150px;
+  }
+  .stat-card:hover { transform: translateY(-5px); }
+
+  .stat-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 14px;
+    font-size: 1.7rem;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 18px !important;
+    height: 420px;
+  }
+
+  canvas { height: 300px !important; }
+</style>
+
+{% endblock %}

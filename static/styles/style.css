@@ -1,0 +1,207 @@
+/* ==========================================================================
+   1. General & Utility Classes
+   ========================================================================== */
+
+main {
+  position: relative;
+  min-height: 68.5vh;
+}
+
+.font-rbt {
+  font-family: 'Roboto', sans-serif;
+}
+
+.bg-green {
+  background-color: #49683C !important;
+}
+
+.text-green {
+  color: #49683c !important;
+}
+
+.bg-pink {
+  background-color: #f9f1f2 !important;
+}
+
+
+/* ==========================================================================
+   2. Navbar & Header
+   ========================================================================== */
+
+.navbar-expand-lg {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1030 !important; /* Higher than default Bootstrap components */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #49683C; /* Explicitly set here */
+}
+
+.logo-big {
+  height: 30px !important;
+  transform: scale(1.5);
+  transform-origin: center;
+  display: block;
+}
+
+.navbar-nav .nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-nav .nav-link {
+  color: white !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative; /* For active indicator */
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Active Nav Link Style with Underline */
+.nav-link.text-select {
+  font-weight: 700 !important; /* Make active link bolder */
+}
+
+.nav-link.text-select::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+  right: 1rem;
+  height: 3px;
+  background-color: #fff;
+  border-radius: 2px;
+}
+
+
+/* Notification Badge Styles */
+.notification-badge {
+    position: absolute;
+    top: 2px;
+    right: 0px;
+    font-size: 0.65rem;
+    padding: 0.2em 0.5em;
+    border: 1px solid white;
+}
+
+
+/* Dropdown Menu */
+.dropdown-menu {
+  background-color: #49683C !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.dropdown-item {
+  color: white !important;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+
+/* ==========================================================================
+   3. Buttons
+   ========================================================================== */
+
+.bg-btn, .bg-filter {
+  background-color: #49683c !important;
+  color: white !important;
+  border-color: #49683c !important;
+  border-radius: 8px !important;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.bg-btn:hover, .bg-filter:hover {
+    background-color: #3a5330 !important;
+    border-color: #3a5330 !important;
+    transform: translateY(-2px);
+}
+
+.bg-btn-light {
+  color: #49683c !important;
+  background-color: white !important;
+  border: 1px solid #49683c !important;
+  border-radius: 8px !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bg-btn-light:hover {
+    background-color: #f8f9fa !important;
+    color: #3a5330 !important;
+}
+
+
+/* ==========================================================================
+   4. Tables
+   ========================================================================== */
+
+/* This global rule is aggressive but kept from the original file. */
+table {
+  border-collapse: collapse;
+}
+table th, table td {
+  border: 1px solid #dee2e6; /* Softer border color */
+}
+
+/* This class is likely from table.css but also defined here. */
+.bg-tab {
+  background-color: #49683c !important;
+}
+
+
+/* ==========================================================================
+   5. Pagination
+   ========================================================================== */
+
+.pagination .page-item .page-link {
+    color: #49683c;
+    border: 1px solid #dee2e6;
+    margin: 0 2px;
+    border-radius: .25rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.pagination .page-item .page-link:hover {
+    z-index: 2;
+    color: #3a5330;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.pagination .page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #49683c;
+    border-color: #49683c;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+/* ==========================================================================
+   6. Legacy / Unsorted
+   ========================================================================== */
+
+.items-center {
+  align-items: center;
+}
+
+.circle {
+  border-radius: 100%;
+  width: 75px;
+  height: 75px;
+}
+
+.label-request {
+  color: #49683c;
+}

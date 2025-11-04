@@ -1,0 +1,129 @@
+{% extends '../layouts/base.html' %}
+
+{% block main %}
+<br>
+<h1 style="text-align: center; font-size: 2.2rem; font-weight: bold; color: #D35400;" class="mb-4">ĐƠN KHIẾU NẠI</h1>
+<div class="container" style="display: flex; justify-content: center;">
+  <div style="width: 80%; background-color: #FFF3E0; border: 2px solid #E67E22; border-radius: 10px; padding: 20px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);">
+
+    <!-- Hiển thị thông báo "Cảm ơn bạn đã đóng góp ý kiến!" -->
+
+    {% if success %}
+      <div class="font-rbt mt-3 mb-3" style="font-size: 20px; text-align: center; color: green;">
+        <em>Đơn khiếu nại của bạn đã gửi thành công !</em>
+      </div>
+    {% endif %}
+
+    <!-- Danh sách góp ý -->
+    <div style="max-height: 500px; overflow-y: auto; border: 1px solid #E67E22; padding: 10px; background-color: #FFFFFF; border-radius: 10px; margin-bottom: 20px;">
+      {% if my_complaint %}
+        {% for kn in my_complaint %}
+          <h5 class="mt-2" style="font-size: 20px; color: #D35400;">
+            {% if kn.is_anonymous %} Gửi ẩn danh {% else %} Gửi công khai {% endif %}: {{ lt.created_at|date:"H:i, d/m/yy" }}
+          </h5>
+          <div class="px-5" style="margin-bottom: 20px;">
+            <div style="font-size: 20px;" class="pb-2">- Chủ đề: {{ kn.topic.name }}</div>
+            <div style="font-size: 20px;" class="pb-2">- Trạng thái:
+              <span style="font-weight: bold; color: {% if kn.status == 'Đã xử lý' %}green{% elif kn.status == 'Đang xử lý' %}orange{% else %}red{% endif %};">
+                {{ kn.status }}
+              </span>
+            </div>
+            <a href="/complaints/{{ kn.id }}/" style="text-decoration: none; color: #D35400; font-weight: 600;">- Xem chi tiết</a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <h5 style="font-size: 20px; text-align: center; color: #5D4037;">Bạn chưa có đơn khiếu nại</h5>
+      {% endif %}
+    </div>
+
+    <!-- Nút "Đóng góp ý kiến" -->
+    <center>
+      <button id="btn-contribute" class="btn btn-info bg-btn btn-letter mt-1 text-light pe-5 ps-5 pt-2 pb-2"
+        style="background-color: #E67E22; border-color: #E67E22; border-radius: 5px; padding: 14px 28px; font-size: 18px; font-weight: 600;">
+        Khiếu nại
+      </button>
+    </center>
+
+    <!-- Form đóng góp ý kiến -->
+    <div class="mt-2 div-form d-none" style="margin-top: 20px; padding: 20px; background-color: #FFFFFF; border: 1px solid #E67E22; border-radius: 10px;">
+      <div class="d-flex" style="justify-content: flex-end;">
+        <i style="cursor: pointer; color: #D35400; font-size: 1.8rem;" class="fa-regular fa-circle-xmark close"></i>
+      </div>
+      <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <style>
+          /* Tùy chỉnh màu sắc và font chữ của form kế thừa */
+          form input[type="text"],
+          form input[type="email"],
+          form textarea,
+          form select {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px; /* Font chữ to hơn */
+            border: 1px solid #E67E22;
+            border-radius: 5px;
+            background-color: #FFF3E0;
+            transition: all 0.3s ease-in-out;
+          }
+
+          form input[type="text"]:focus,
+          form input[type="email"]:focus,
+          form textarea:focus,
+          form select:focus {
+            border-color: #D35400;
+            box-shadow: 0px 0px 8px rgba(211, 84, 0, 0.5);
+          }
+
+          form label {
+            font-size: 18px; /* Font chữ lớn hơn */
+            color: #D35400;
+            font-weight: bold;
+            margin-bottom: 5px;
+          }
+
+          form button[type="submit"] {
+            background-color: #E67E22;
+            color: white;
+            font-size: 18px; /* Font chữ lớn hơn */
+            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+          }
+
+          form button[type="submit"]:hover {
+            background-color: #D35400;
+          }
+        </style>
+        <center>
+          <button class="btn btn-primary mt-3 text-light pe-5 ps-5 pt-2 pb-2" style="background-color: #E67E22; border-color: #E67E22;">Gửi</button>
+        </center>
+      </form>
+    </div>
+  </div>
+</div>
+<br><br>
+
+{% load static %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const contributeButton = document.getElementById("btn-contribute");
+    const formDiv = document.querySelector(".div-form");
+    const closeButton = document.querySelector(".close");
+
+    // Khi nhấn vào "Đóng góp ý kiến"
+    contributeButton.addEventListener("click", function () {
+      formDiv.classList.remove("d-none");
+      window.scrollTo({ top: formDiv.offsetTop, behavior: "smooth" }); // Cuộn đến form khi hiển thị
+    });
+
+    // Khi nhấn vào nút đóng (X)
+    closeButton.addEventListener("click", function () {
+      formDiv.classList.add("d-none");
+    });
+  });
+</script>
+{% endblock %}

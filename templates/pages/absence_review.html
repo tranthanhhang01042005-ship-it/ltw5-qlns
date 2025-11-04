@@ -1,0 +1,132 @@
+{% extends '../layouts/base.html' %}
+{% load static %}
+
+{% block main %}
+<style>
+  .table-bordered thead th {
+    vertical-align: middle;
+  }
+
+  .table-bordered tbody tr:nth-child(odd) {
+    background-color: #f9f1f2; /* màu nền khi có dữ liệu */
+  }
+
+  .table-bordered tbody tr:nth-child(even) {
+    background-color: #ffffff;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: #e9f0ea; /* xanh rêu nhạt khi hover */
+  }
+
+  .bg-tab {
+    background-color: #48673c !important; /* header */
+    color: white !important;
+  }
+
+  .custom-border {
+    border: 2px solid #48673c;
+    border-radius: 10px;
+  }
+
+  .border-cell {
+    border: 1px solid #48673c;
+  }
+
+  .link-highlight {
+    color: #48673c;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .link-highlight:hover {
+    color: #2e4a2a;
+    text-decoration: underline;
+  }
+
+  .table-bordered tbody tr:last-child {
+    border-bottom: 2px solid #48673c;
+  }
+
+  /* Khi chưa có yêu cầu nghỉ phép */
+  .no-data-row {
+    background-color: #f9f1f2 !important;
+    text-align: center;
+    font-style: italic;
+    color: #777;
+  }
+</style>
+
+<br>
+<h1 style="text-align: center; font-size: 2rem; font-weight: bold; color: #48673c;">CÁC YÊU CẦU NGHỈ PHÉP</h1>
+<br>
+
+<table class="table table-hover table-bordered custom-border" style="border-radius: 10px; overflow: hidden;">
+  <thead class="bg-tab text-white">
+    <tr>
+      <th scope="col" class="text-center">Họ tên</th>
+      <th scope="col" class="text-center">Ngày bắt đầu</th>
+      <th scope="col" class="text-center">Ngày kết thúc</th>
+      <th scope="col" class="text-center">Lý do</th>
+      <th scope="col" class="text-center">Minh chứng</th>
+      <th scope="col" class="text-center">Trạng thái</th>
+      <th scope="col" class="text-center">Duyệt</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if page_obj %}
+      {% for rq in page_obj %}
+        <tr class="table-row">
+          <td class="text-center align-middle border-cell">
+            <a href="/profile/{{rq.user.username}}/" class="link-highlight">
+              {{ rq.user.first_name }} {{ rq.user.last_name }}
+            </a>
+          </td>
+          <td class="text-center align-middle border-cell">{{ rq.start_date|date:"d/m/Y" }}</td>
+          <td class="text-center align-middle border-cell">{{ rq.end_date|date:"d/m/Y" }}</td>
+          <td class="align-middle border-cell">{{ rq.reason }}</td>
+          <td class="text-center align-middle border-cell">
+            {% if rq.image %}
+              <a href="{{ rq.image.url }}" target="_blank" style="text-decoration: none;">
+                <button class="btn btn-secondary" style="background-color: #48673c; border-color: #48673c; color: white;">
+                  Xem ảnh
+                </button>
+              </a>
+            {% else %}
+              <span>Không có</span>
+            {% endif %}
+          </td>
+          <td class="text-center align-middle border-cell">
+            {% if rq.status == 'approved' %}
+              <span style="color: green; font-weight: bold;">Đã duyệt</span>
+            {% elif rq.status == 'pending' %}
+              <span style="color: orange; font-weight: bold;">Đang chờ</span>
+            {% else %}
+              <span style="color: red; font-weight: bold;">Từ chối</span>
+            {% endif %}
+          </td>
+          <td class="border-cell">
+            {% if rq.status == 'pending' %}
+              <form method="post">
+                {% csrf_token %}
+                <center>
+                  <button class="btn text-light" name="accept" value="{{ rq.id }}"
+                    style="background-color: #48673c; border-color: #48673c;">Duyệt</button>
+                  <button class="btn bg-light" name="refuse" value="{{ rq.id }}"
+                    style="border: 1px solid #48673c; color: #48673c;">Từ chối</button>
+                </center>
+              </form>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    {% else %}
+      <tr class="no-data-row">
+        <td colspan="7">✨ Hiện chưa có yêu cầu nghỉ phép nào.</td>
+      </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+{% include 'partials/paginator.html' %}
+{% endblock %}

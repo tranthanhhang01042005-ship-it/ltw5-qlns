@@ -1,0 +1,121 @@
+<html><head></head><body>{% extends '../layouts/base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block main %}
+<link rel="stylesheet" href="{% static 'styles/table.css' %}">
+
+<br>
+<h1 style="text-align: center; font-size: 2rem; font-weight: bold; color: #49683c;">BẢNG LƯƠNG CHÍNH</h1>
+{% include 'partials/filter_salary.html' %}
+<div class="d-flex justify-content-start">
+  <select id="select-export" class="form-control text-light" style="width: 150px; background-color: #49683c; cursor: pointer;">
+    <option value="">Export Salary File</option>
+    <option value="csv">CSV File</option>
+    <option value="json">JSON File</option>
+    <option value="txt">TXT File</option>
+  </select>
+</div>
+<br>
+
+
+    {% for sheet in sheets %}
+
+    {% endfor %}
+  <table class="table table-hover table-bordered custom-border table-salary" style="border-radius: 10px; overflow: hidden;">
+  <thead class="bg-tab text-white" style="background-color: #49683c;">
+    <tr>
+      <th scope="col" class="text-center" style="vertical-align: middle; width: 3%">ID</th>
+      <th scope="col" class="text-center" style="vertical-align: middle; width: 9%">Họ tên</th>
+      <th scope="col" class="text-center" style="vertical-align: middle;">Lương cơ bản</th>
+      <th scope="col" class="text-center" style="vertical-align: middle;">Số công chuẩn</th>
+      <th scope="col" class="text-center" style="vertical-align: middle; width: 6%">Số phép nghỉ</th>
+      <th scope="col" class="text-center" style="vertical-align: middle; width: 6%">Tổng công</th>
+      <th scope="col" class="text-center" style="vertical-align: middle;">Lương ngày công</th>
+      <th scope="col" class="text-center" style="vertical-align: middle; width: 6%">Số giờ tăng ca</th>
+      <th scope="col" class="text-center" style="vertical-align: middle;">Lương tăng ca</th>
+      <th scope="col" class="text-center" style="vertical-align: middle;">Thưởng chuyên cần</th>
+      <th scope="col" class="text-center" style="vertical-align: middle; width: 6%">Số giờ đi trễ</th>
+      <th scope="col" class="text-center" style="vertical-align: middle;">Phạt đi trễ</th>
+      <th scope="col" class="text-center" style="vertical-align: middle;">Khấu trừ BHXH</th>
+      <th scope="col" class="text-center" style="vertical-align: middle;">Thuế TNCN</th>
+      <th scope="col" class="text-center" style="vertical-align: middle; width: 9%">Thực lĩnh</th>
+    </tr>
+  </thead>
+  <tbody><tr style="transition: background-color 0.3s;">
+      <td class="text-center align-middle border-cell">
+        <a href="/profile/{{sheet.user__username}}/" class="link-highlight">{{ sheet.user__id }}</a>
+      </td>
+      <td class="text-center align-middle border-cell">
+        <a href="/profile/{{sheet.user__username}}/" class="link-highlight">{{ sheet.user__first_name }} {{ sheet.user__last_name }}</a>
+      </td>
+      <td class="text-center align-middle border-cell">{{ sheet.total_salary|intcomma }}</td>
+      <td class="text-center align-middle border-cell">{{ 26 }}</td>
+      <td class="text-center align-middle border-cell">{{ sheet.approved_days_off }} </td>
+      <td class="text-center align-middle border-cell">{{ sheet.att_day }} </td>
+      <td class="text-center align-middle border-cell">{{ sheet.real_salary|intcomma }} </td>
+      <td class="text-center align-middle border-cell">{{ sheet.ot_sum }} </td>
+      <td class="text-center align-middle border-cell">{{ sheet.ot_sal|intcomma }} </td>
+      <td class="text-center align-middle border-cell">{{ sheet.awrd|intcomma }} </td>
+      <td class="text-center align-middle border-cell">{{ sheet.lt_sum }} </td>
+      <td class="text-center align-middle border-cell">{{ sheet.neg_sal|intcomma }} </td>
+      <td class="text-center align-middle border-cell">{{ sheet.bhxh|intcomma }} </td>
+      <td class="text-center align-middle border-cell">{{ sheet.tncn|intcomma }} </td>
+      <td class="text-center align-middle border-cell" style="color: #49683c; font-weight: bold;">{{ sheet.real_sal|intcomma }} </td>
+    </tr></tbody>
+</table>
+<br>
+
+{% include 'partials/paginator.html' %}
+
+<script src="{% static 'scripts/total_salary.js' %}"></script>
+
+<style>
+  /* Màu nền xanh lá nhạt và hiệu ứng hover */
+  .table-bordered tbody tr:nth-child(odd) {
+    background-color: #f3f7f2; /* <-- ĐÃ ĐỔI */
+  }
+
+  .table-bordered tbody tr:nth-child(even) {
+    background-color: #FFFFFF;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: #dbe6d8; /* <-- ĐÃ ĐỔI */
+  }
+
+  /* Header bảng màu xanh lá đậm */
+  .bg-tab {
+    background-color: #49683c !important; /* <-- ĐÃ ĐỔI */
+    color: white !important;
+  }
+
+  /* Border khung ngoài của bảng */
+  .custom-border {
+    border: 3px solid #000000;
+    border-radius: 10px;
+  }
+
+  /* Border cho từng ô */
+  .border-cell {
+    border: 1px solid #000000;
+  }
+
+  /* Liên kết với màu xanh lá */
+  .link-highlight {
+    color: #49683c; /* <-- ĐÃ ĐỔI */
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .link-highlight:hover {
+    color: #49683c; /* <-- ĐÃ ĐỔI */
+    text-decoration: underline;
+  }
+
+  /* Border hàng cuối cùng */
+  .table-bordered tbody tr:last-child {
+    border-bottom: 2px solid #000000;
+  }
+</style>
+{% endblock %}</body></html>

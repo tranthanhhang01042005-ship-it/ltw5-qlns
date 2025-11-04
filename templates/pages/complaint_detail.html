@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %}
+{% block main %}
+<h2>{{ title }}</h2>
+<p><strong>Tiêu đề:</strong> {{ complaint.title }}</p>
+<p><strong>Chủ đề:</strong> {{ complaint.topic.name }}</p>
+<p><strong>Nội dung:</strong> {{ complaint.content }}</p>
+<p><strong>Trạng thái:</strong> {{ complaint.status }}</p>
+{% if complaint.evidence %}
+<p><strong>Minh chứng:</strong> <a href="{{ complaint.evidence.url }}">Xem file</a></p>
+{% endif %}
+<form method="POST">
+  {% csrf_token %}
+  <button type="submit">Đánh dấu đã xử lý</button>
+</form>
+{% endblock %}
